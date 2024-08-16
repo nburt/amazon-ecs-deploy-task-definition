@@ -1129,7 +1129,7 @@ describe('Deploy to ECS', () => {
             launchType: 'FARGATE',
             taskDefinition: 'task:def:arn',
             overrides: {"containerOverrides": []},
-            networkConfiguration: {awsvpcConfiguration: {assignPublicIp: "DISABLED" }}
+            networkConfiguration: null
         });
 
         expect(core.setOutput).toHaveBeenNthCalledWith(2, 'run-task-arn', ["arn:aws:ecs:fake-region:account_id:task/arn"]);
