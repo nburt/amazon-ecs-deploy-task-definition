@@ -22,7 +22,7 @@ const IGNORED_TASK_DEFINITION_ATTRIBUTES = [
 
 // Method to run a stand-alone task with desired inputs
 async function runTask(ecs, clusterName, taskDefArn, waitForMinutes) {
-  core.info('Running task 2')
+  core.info('Running task')
 
   const waitForTask = core.getInput('wait-for-task-stopped', { required: false }) || 'false';
   const startedBy = core.getInput('run-task-started-by', { required: false }) || 'GitHub-Actions';
@@ -45,16 +45,6 @@ async function runTask(ecs, clusterName, taskDefArn, waitForMinutes) {
   if(assignPublicIP != "" && (subnetIds != "" || securityGroupIds != "")){
     awsvpcConfiguration["assignPublicIp"] = assignPublicIP
   }
-  core.warning(`Task config: ${JSON.stringify({
-    startedBy: startedBy,
-    cluster: clusterName,
-    taskDefinition: taskDefArn,
-    overrides: {
-      containerOverrides: containerOverrides
-    },
-    launchType: launchType,
-    networkConfiguration: Object.keys(awsvpcConfiguration).length === 0 ? null : { awsvpcConfiguration: awsvpcConfiguration }
-  })}`)
 
   const runTaskResponse = await ecs.runTask({
     startedBy: startedBy,
