@@ -22,7 +22,7 @@ const IGNORED_TASK_DEFINITION_ATTRIBUTES = [
 
 // Method to run a stand-alone task with desired inputs
 async function runTask(ecs, clusterName, taskDefArn, waitForMinutes) {
-  core.info('Running task')
+  core.info('Running task 2')
 
   const waitForTask = core.getInput('wait-for-task-stopped', { required: false }) || 'false';
   const startedBy = core.getInput('run-task-started-by', { required: false }) || 'GitHub-Actions';
