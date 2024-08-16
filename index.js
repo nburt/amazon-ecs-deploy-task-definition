@@ -45,6 +45,16 @@ async function runTask(ecs, clusterName, taskDefArn, waitForMinutes) {
   if(assignPublicIP != "" && (subnetIds != "" || securityGroupIds != "")){
     awsvpcConfiguration["assignPublicIp"] = assignPublicIP
   }
+  core.warning(`Task config: ${JSON.stringify({
+    startedBy: startedBy,
+    cluster: clusterName,
+    taskDefinition: taskDefArn,
+    overrides: {
+      containerOverrides: containerOverrides
+    },
+    launchType: launchType,
+    networkConfiguration: Object.keys(awsvpcConfiguration).length === 0 ? null : { awsvpcConfiguration: awsvpcConfiguration }
+  })}`)
 
   const runTaskResponse = await ecs.runTask({
     startedBy: startedBy,
