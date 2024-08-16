@@ -1236,6 +1236,36 @@ describe('Deploy to ECS', () => {
         expect(waitUntilTasksStopped).toHaveBeenCalledTimes(1);
     });
 
+    test('run task in bridge network mode', async () => {
+        core.getInput = jest
+            .fn()
+            .mockReturnValueOnce('task-definition.json')  // task-definition
+            .mockReturnValueOnce('service-456')           // service
+            .mockReturnValueOnce('somecluster')           // cluster
+            .mockReturnValueOnce('true')                  // wait-for-service-stability
+            .mockReturnValueOnce('')                      // wait-for-minutes
+            .mockReturnValueOnce('')                      // force-new-deployment
+            .mockReturnValueOnce('')                      // desired-count
+            .mockReturnValueOnce('true')                  // run-task
+            .mockReturnValueOnce('true')                  // wait-for-task-stopped
+            .mockReturnValueOnce('someJoe')               // run-task-started-by
+            .mockReturnValueOnce('EC2')                   // run-task-launch-type
+            .mockReturnValueOnce('')                      // run-task-subnet-ids
+            .mockReturnValueOnce('')                      // run-task-security-group-ids
+            .mockReturnValueOnce('')                      // run-task-container-overrides
+            .mockReturnValueOnce('')                      // run-task-assign-public-IP
+
+        await run();
+        expect(mockRunTask).toHaveBeenCalledWith({
+            startedBy: 'someJoe',
+            cluster: 'somecluster',
+            taskDefinition: 'task:def:arn',
+            launchType: 'EC2',
+            overrides: { containerOverrides: [] },
+            networkConfiguration: null
+        });
+    });
+
     test('error is caught if run task fails with (wait-for-task-stopped: true)', async () => {
         core.getInput = jest
         .fn()
